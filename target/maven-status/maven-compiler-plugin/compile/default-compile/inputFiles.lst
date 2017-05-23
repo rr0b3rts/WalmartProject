@@ -1,4 +1,5 @@
-/Users/rroberts/eclipse/workspace/IntuitExercise/src/com/intuit/model/URL.java
-/Users/rroberts/eclipse/workspace/IntuitExercise/src/com/intuit/rest/URLService.java
-/Users/rroberts/eclipse/workspace/IntuitExercise/src/com/intuit/dao/URLDao.java
-/Users/rroberts/eclipse/workspace/IntuitExercise/src/com/intuit/util/HibernateUtil.java
+/Users/rroberts/eclipse/workspace/WalmartProject/src/com/walmart/util/HibernateUtil.java
+/Users/rroberts/eclipse/workspace/WalmartProject/src/com/walmart/reminder/service/ReminderService.java
+/Users/rroberts/eclipse/workspace/WalmartProject/src/com/walmart/reminder/dao/ReminderDAO.java
+/Users/rroberts/eclipse/workspace/WalmartProject/src/com/walmart/reminder/model/Reminder.java
+/Users/rroberts/eclipse/workspace/WalmartProject/src/com/walmart/reminder/model/Status.java

@@ -1,4 +1,5 @@
-com/intuit/util/HibernateUtil.class
-com/intuit/dao/URLDao.class
-com/intuit/rest/URLService.class
-com/intuit/model/URL.class
+com/walmart/reminder/dao/ReminderDAO.class
+com/walmart/reminder/model/Status.class
+com/walmart/util/HibernateUtil.class
+com/walmart/reminder/service/ReminderService.class
+com/walmart/reminder/model/Reminder.class

@@ -1,0 +1,344 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <!-- This page is copyright Elated Communications Ltd. (www.elated.com) -->
+
+    <title>WalmartProject - Reminder Service</title>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style type="text/css">
+      body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }
+      ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0; }
+      ul#tabs li { display: inline; }
+      ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none; }
+      ul#tabs li a:hover { background-color: #f1f0ee; }
+      ul#tabs li a.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
+      div.tabContent { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
+      div.tabContent.hide { display: none; }
+    </style>
+    
+  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
+    <script type="text/javascript">
+    //<![CDATA[
+    	
+    $(function() {
+    	$("#addDatePicker").datepicker();
+	});
+    
+    $(function() {
+		$("#updateDatePicker").datepicker();
+	});
+    
+    $(function() {
+		$("#remindersDatePicker").datepicker();
+	});
+    	
+    $(function() { 
+    	$(document).on("submit", "#addReminderForm", function(e) { 
+	        $.ajax({  
+	            url: "http://localhost:8080/WalmartProject/rest/ReminderService/addReminder",
+	        	type: "post",  
+	            data: $(this).serialize(),
+	            error: function(data){
+	            	$('#addReminderDiv').css('display', 'none');
+	            	$('#addReminderMessageDiv').css('display', 'inline-block');
+	            	$('#addReminderMessageDiv').html("<p><b>Reminder NOT added.</b></p><p>" + data.responseText + "</p>");
+	            	
+	            	setTimeout(function() {
+	            		$('#addReminderDiv').css('display', 'inline-block');
+		            	$('#addReminderMessageDiv').css('display', 'none');
+	            		$('#addReminderForm')[0].reset();
+	            	}, 3000);
+	            },
+	            success: function(data) {
+	            	$('#addReminderDiv').css('display', 'none');
+	            	$('#addReminderMessageDiv').css('display', 'inline-block');
+	            	$('#addReminderMessageDiv').html("<p><b>Reminder added</b></p>");
+	            	$('#getRemindersForm')[0].reset();
+	            	$('#displayRemindersOrMessageDiv').html("");
+	            	
+	            	setTimeout(function() {
+	            		$('#addReminderDiv').css('display', 'inline-block');
+		            	$('#addReminderMessageDiv').css('display', 'none');
+	            		$('#addReminderForm')[0].reset();
+	            	}, 2000);
+	            },
+	        });
+	        
+	        return false; 
+	    });
+	}); 
+    
+    $(function() { 
+    	$(document).on("submit", "#updateReminderForm", function(e) { 
+	        $.ajax({  
+	            url: "http://localhost:8080/WalmartProject/rest/ReminderService/updateReminder",
+	        	type: "post",  
+	            data: $(this).serialize(),
+	            error: function(data){
+	            	$('#updateReminderDiv').css('display', 'none');
+	            	$('#updateReminderMessageDiv').css('display', 'inline-block');
+	            	$('#updateReminderMessageDiv').html("<p><b>Reminder NOT updated.</b></p><p>" + data.responseText + "</p>");
+	            	
+	            	setTimeout(function() {
+	            		$('#updateReminderDiv').css('display', 'inline-block');
+		            	$('#updateReminderMessageDiv').css('display', 'none');
+	            		$('#updateReminderForm')[0].reset();
+	            	}, 3000);
+	            },
+	            success: function(data) {
+	            	$('#updateReminderDiv').css('display', 'none');
+	            	$('#updateReminderMessageDiv').css('display', 'inline-block');
+	            	$('#updateReminderMessageDiv').html("<p><b>Reminder updated</b></p>");
+	            	$('#getRemindersForm')[0].reset();
+	            	$('#displayRemindersOrMessageDiv').html("");
+	            	
+	            	setTimeout(function() {
+	            		$('#updateReminderDiv').css('display', 'inline-block');
+		            	$('#updateReminderMessageDiv').css('display', 'none');
+	            		$('#updateReminderForm')[0].reset();
+	            	}, 2000);
+	            },
+	        });
+	        
+	        return false; 
+	    });
+	}); 
+    
+    $(function() { 
+    	$(document).on("submit", "#getRemindersForm", function(e) { 
+	        $.ajax({  
+	            url: "http://localhost:8080/WalmartProject/rest/ReminderService/getReminders",
+	        	type: "post",  
+	            data: $(this).serialize(),
+	            error: function(data){
+	            	$('#displayRemindersOrMessageDiv').html("<p><b>No reminders found.</b></p>");
+	            },
+	            success: function(data) {
+	            	var result = "<hr>";
+	            	result += "<table border='1' width='100%'>";
+	        	    result += "<tr bgcolor='#c0c0c0'><th>Name</th><th>Description</th><th>Due Date</th><th>Status</th><th>Edit Reminder</th></tr>";
+	        	    
+	        	    for(var i=0; i < data.length; i++) {
+	        	    	var reminder = data[i];
+	        	    	var reminderId = reminder["id"];
+	        	    	var reminderName = reminder["name"];
+	        	    	var reminderDesc = reminder["description"];
+	        	    	
+	        	    	var reminderDate = reminder["dueDate"];
+	        	    	
+	        	    	if(reminderDate != null && reminderDate.length > 10) {
+	        	    		var newDate = new Date(reminderDate);
+	        	    		reminderDate = (newDate.getMonth() + 1) + "/" + newDate.getDate() + "/" + newDate.getFullYear();
+	        	    	}
+	        	    	
+	        	    	var reminderStatus = reminder["status"];
+	        	    	
+	        	    	result += "<tr>";
+	        			result += "<td>" + reminderName + "</td>";
+	        			result += "<td>" + reminderDesc  + "</td>";
+	        			result += "<td>" + reminderDate + "</td>";
+	        			result += "<td>" + reminderStatus + "</td>";
+	        			result += "<td><a href='#' onclick=\"updateReminder(" + reminderId + ", '" + reminderName + "', '" + reminderDesc + "', '" + reminderDate + "', '" + reminderStatus + "');\">Edit</a></td>";
+	        			    
+	        			result += "</tr>";
+	        	    }
+	        	    result += "</table>";
+	        	    
+	        	    $('#displayRemindersOrMessageDiv').html(result);
+	            },
+	        });
+	        
+	        return false; 
+	    });
+	});
+    
+    function updateReminder(id, name, description, dueDate, status) {
+    	tabLinks["updateReminder"].click();
+    	document.getElementById("updateName").value = name;
+    	document.getElementById("updateDescription").value = description;
+    	document.getElementById("updateDatePicker").value = dueDate;
+    	
+    	if(status.toUpperCase() === "DONE") {
+    		document.getElementById("updateStatus").value = "Done";
+    	} else {
+    		document.getElementById("updateStatus").value = "Not Done";	
+    	}
+    	
+    	document.getElementById("updateId").value = id;
+    }
+
+    var tabLinks = new Array();
+    var contentDivs = new Array();
+
+    function init() {
+
+      // Grab the tab links and content divs from the page
+      var tabListItems = document.getElementById('tabs').childNodes;
+      for ( var i = 0; i < tabListItems.length; i++ ) {
+        if ( tabListItems[i].nodeName == "LI" ) {
+          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
+          var id = getHash( tabLink.getAttribute('href') );
+          tabLinks[id] = tabLink;
+          contentDivs[id] = document.getElementById( id );
+        }
+      }
+
+      // Assign onclick events to the tab links, and
+      // highlight the first tab
+      var i = 0;
+
+      for ( var id in tabLinks ) {
+        tabLinks[id].onclick = showTab;
+        tabLinks[id].onfocus = function() { this.blur() };
+        if ( i == 0 ) tabLinks[id].className = 'selected';
+        i++;
+      }
+
+      // Hide all content divs except the first
+      var i = 0;
+
+      for ( var id in contentDivs ) {
+        if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
+        i++;
+      }
+    }
+
+    function showTab() {
+      var selectedId = getHash( this.getAttribute('href') );
+
+      // Highlight the selected tab, and dim all others.
+      // Also show the selected content div, and hide all others.
+      for ( var id in contentDivs ) {
+        if ( id == selectedId ) {
+          tabLinks[id].className = 'selected';
+          contentDivs[id].className = 'tabContent';
+        } else {
+          tabLinks[id].className = '';
+          contentDivs[id].className = 'tabContent hide';
+        }
+      }
+
+      // Stop the browser following the link
+      return false;
+    }
+
+    function getFirstChildWithTagName( element, tagName ) {
+      for ( var i = 0; i < element.childNodes.length; i++ ) {
+        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
+      }
+    }
+
+    function getHash( url ) {
+      var hashPos = url.lastIndexOf ( '#' );
+      return url.substring( hashPos + 1 );
+    }
+
+    //]]>
+    </script>
+  </head>
+  <body onload="init()">
+    <h1>WalmartProject - Reminder Service</h1>
+
+    <ul id="tabs">
+      <li><a href="#addReminder">Add Reminder</a></li>
+      <li><a href="#updateReminder">Update Reminder</a></li>
+      <li><a href="#getReminders">Reminders</a></li>
+    </ul>
+
+    <div class="tabContent" id="addReminder">
+      <div id="addReminderDiv">
+      	<h2>Reminder</h2>
+      	<form id="addReminderForm">
+      		<table>
+      			<tr>
+      				<td width="100">Name:</td>
+      				<td><input type="text" name="name" /></td>
+      			</tr>
+      			<tr>
+      				<td>Description:</td>
+      				<td><input type="text" name="description" /></td>
+      			</tr>
+      			<tr>
+      				<td>Date:</td>
+      				<td><input id="addDatePicker" type="text" name="dueDate" /></td>
+      			</tr>
+      			<tr>
+      				<td>Status:</td>
+      				<td>Not Done</td>
+      			</tr>
+      			<tr><td colspan="2" align="right"><input type="submit"  /></td></tr>
+      		</table>
+      	</form>  
+      </div>
+      <div id="addReminderMessageDiv" style="display: none;"></div>
+    </div>
+    
+    <div class="tabContent" id="updateReminder">
+      <div id="updateReminderDiv">
+      	<h2>Reminder</h2>
+      	<form id="updateReminderForm">
+      		<table>
+      			<tr>
+      				<td width="100">Name:</td>
+      				<td><input id="updateName" type="text" name="name" /></td>
+      			</tr>
+      			<tr>
+      				<td>Description:</td>
+      				<td><input id="updateDescription" type="text" name="description" /></td>
+      			</tr>
+      			<tr>
+      				<td>Date:</td>
+      				<td><input id="updateDatePicker" type="text" name="dueDate" /></td>
+      			</tr>
+      			<tr>
+      				<td>Status:</td>
+      				<td>
+      					<select id="updateStatus" name="status">
+      						<option value="Not Done">Not Done</option>
+      						<option value="Done">Done</option>
+      					</select>
+      				</td>
+      			</tr>
+      			<input id="updateId" type="hidden" name="id" />
+      			<tr><td colspan="2" align="right"><input type="submit" /></td></tr>
+      		</table>
+      	</form>  
+      </div>
+      <div id="updateReminderMessageDiv" style="display: none;"></div>
+    </div>
+
+    <div class="tabContent" id="getReminders">
+   	  <p>Select date and/or status to filter reminders.  Leave blank to return all reminders.</p>
+      <div id="getRemindersDiv">
+      	<form id="getRemindersForm">
+      		<table>
+      			<tr>
+      				<td>Date:</td>
+      				<td><input id="remindersDatePicker" type="text" name="dueDate" /></td>
+      			</tr>
+      			<tr>
+      				<td>Status:</td>
+      				<td>
+      					<select name="status">
+      						<option value=""></option>
+      						<option value="Not Done">Not Done</option>
+      						<option value="Done">Done</option>
+      					</select>
+      				</td>
+      			</tr>
+      			<tr><td colspan="2" align="right"><input type="submit" /></td></tr>
+      		</table>
+      	</form>  
+      </div>
+      <div id="displayRemindersOrMessageDiv"></div>
+    </div>
+
+  </body>
+</html>

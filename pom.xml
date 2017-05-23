@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.intuit</groupId>
-  <artifactId>IntuitExercise</artifactId>
+  <groupId>com.walmart</groupId>
+  <artifactId>WalmartProject</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>IntuitExercise</name>
+  <name>WalmartProject</name>
   
   <build>
 		<sourceDirectory>src</sourceDirectory>
@@ -32,6 +32,7 @@
        			<directory>src</directory>
     		</resource>
 		</resources>
+		<finalName>WalmartProject</finalName>
   </build>
   
   <dependencies>
@@ -108,9 +109,9 @@
 	<!-- Hibernate library dependency end -->
 	
 	<dependency>
-    	<groupId>mysql</groupId>
-    	<artifactId>mysql-connector-java</artifactId>
-    	<version>5.1.32</version>
+	    <groupId>com.h2database</groupId>
+	    <artifactId>h2</artifactId>
+	    <version>1.4.195</version>
 	</dependency>		
   </dependencies>
 </project>
