@@ -28,6 +28,7 @@ Pull down WalmartProject.war and deploy to servlet container, or pull down proje
 
 Once WalmartProject.war has been deployed go to "http://localhost:8080/WalmartProject/" to display the Reminder Service UI.  Add, Update or Display Reminders.
 
+The code currently depends on the service running on http://localhost:8080.  There are hard-coded Ajax calls that expect it to be running there.
 
 ## Running the tests
 
